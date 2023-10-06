@@ -27,9 +27,6 @@ function Home() {
     <>
       <div className="container-fluid home-container-fuild">
         <div className="card shadow mb-4">
-          <div className="card-header py-3">
-            <h6 className="m-0 font-weight-bold text-primary">USER RANKING</h6>
-          </div>
           <div className="card-body">
             <h2>USER RANKING</h2>
             <p>Top 100 Users</p>
@@ -138,7 +135,8 @@ function Home() {
           {users &&
             users.length >= 4 &&
             users.map((item, index) => {
-              <CardItem user={item}></CardItem>;
+              if (index >= 3)
+                return <CardItem user={item} index={index}></CardItem>;
             })}
         </div>
       </div>
