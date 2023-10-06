@@ -4,7 +4,6 @@ import DefaultLayout from './components/Layout/DefaultLayout';
 import { publicRoutes } from './router';
 import { Fragment, useEffect, useState } from 'react';
 import './assets/css/sb-admin-2.min.css';
-import './assets/js/sb-admin-2.min';
 
 function App() {
   const [routerArr, setRouterArr] = useState();

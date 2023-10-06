@@ -602,6 +602,39 @@ body {
   }
 }
 
+.card-body {
+  h2 {
+    font-weight: bold;
+  }
+  .rank-item {
+    .ranking {
+      justify-content: center;
+      align-items: center;
+      color: #aaaaaa;
+      font-weight: bold;
+    }
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      margin: auto;
+      img {
+        background-size: cover;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+      }
+    }
+    .user-name {
+      text-align: left;
+      font-weight: bold;
+      .user-post-count {
+        font-weight: bold;
+        color: rgb(212, 190, 23);
+      }
+    }
+  }
+}
+
 .list-user-ranking {
   padding: 0 11px;
 }
