@@ -1,23 +1,17 @@
 import request from '../core/utils/axios';
 
-export const getUserService = (user) => {
+export const getUsersService = (user) => {
   let s = '';
   if (user.limit) {
     s += '?limit=' + user.limit + '';
   } else {
     s += '?limit=10';
   }
-  if (user.name && user.name !== '') {
-    s += '&name=' + user.name + '';
+  if (user.fullname && user.fullname !== '') {
+    s += '&fullname=' + user.fullname + '';
   }
-  if (user.brandId && user.brandId !== '') {
-    s += '&brandId=' + user.brandId + '';
-  }
-  if (user.categoryId && user.categoryId !== '') {
-    s += '&categoryId=' + user.categoryId + '';
-  }
-  if (user.description && user.description !== '') {
-    s += '&description=' + user.description + '';
+  if (user.username && user.username !== '') {
+    s += '&username=' + user.username + '';
   }
   if (user.sortBy) {
     s += '&sortBy=' + user.sortBy + '';
@@ -39,4 +33,23 @@ export const getRankMonthlyService = () => {
 
 export const getRankYearlyService = () => {
   return request.get('ranks/yearly');
+};
+
+export const updateUserProfileService = async (user, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  return await request.put('users/me', user, config);
+};
+
+export const updateUserService = async (id, user, token) => {
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  const bodyParameters = {
+    ...user,
+  };
+  return await request.put('users/' + id, bodyParameters, config);
 };

@@ -13,11 +13,10 @@ function DefaultLayout({ children }) {
   };
   return (
     <div style={{ fontFamily: 'Verdana, Geneva, Tahoma, sans-serif' }}>
-      <div>
+      <div style={mystyle}>
         <Header />
       </div>
-      <div className="content">{children}</div>
-      <Footer />
+      <div className="content mt-6">{children}</div>
     </div>
   );
 }
