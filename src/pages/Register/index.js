@@ -1,19 +1,21 @@
 import { useState } from 'react';
-import { ToastContainer, toast } from 'react-toastify';
-import { loginService } from '../../services/auth.service';
-import cookies from 'react-cookies';
+import { ToastContainer } from 'react-toastify';
+import { signupService } from '../../services/auth.service';
 import { handelNotify } from '../../core/utils/req';
-import { useDispatch } from 'react-redux';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { userLogin } from '../../store/action/userAction';
+import validator from 'validator';
+import { Button, Modal } from 'react-bootstrap';
+import { Notify } from '../../core/constant';
 
 function Register() {
+  const navigate = useNavigate();
   const [signup, setSignup] = useState({
     fullname: '',
     username: '',
     password: '',
-    repassword: '',
+    confirmPassword: '',
   });
+  const [validate, setValidate] = useState('');
   const handleChange = (e) => {
     const value = e.target.value;
     setSignup({
@@ -22,36 +24,95 @@ function Register() {
     });
     console.log(signup);
   };
-  //   const handleOnclick = async (e) => {
-  //     e.preventDefault();
-
-  //     try {
-  //       let response = await loginService(login);
-  //       const data = response && response.data ? response.data : '';
-  //       cookies.save('Token', data.access_token);
-  //       cookies.save('user', data.user);
-  //       dispatch(userLogin(data.information));
-  //       navigate('/');
-  //     } catch (e) {
-  //       if (
-  //         e.response.data.error &&
-  //         Array.isArray(e.response.data.error) &&
-  //         e.response.data.error[0] &&
-  //         e.response.data.error[0].field
-  //       ) {
-  //         handelNotify('error', e.response.data.error[0].message);
-  //       } else {
-  //         const message =
-  //           e.response.data.error === 'Email or password is incorrect'
-  //             ? 'Email hoặc mật khẩu không chính xác'
-  //             : e.response.data.error;
-  //         handelNotify('error', message);
-  //       }
-  // }
-  //   };
+  const [showAlertCf, setShowAlertCf] = useState({
+    open: false,
+  });
+  const validateAll = () => {
+    const msg = {};
+    if (signup.fullname !== null && signup.fullname !== undefined) {
+      if (validator.isEmpty(signup.fullname)) {
+        msg.fullname = 'Vui lòng nhập tên';
+      } else {
+        if (validator.isNumeric(signup.fullname)) {
+          msg.fullname = 'Tên không hợp lệ';
+        }
+      }
+    }
+    if (validator.isEmpty(signup.username)) {
+      msg.username = 'Vui lòng nhập email';
+    } else {
+      if (!validator.isEmail(signup.username)) {
+        msg.username = 'Email không hợp lệ';
+      }
+    }
+    if (validator.isEmpty(signup.password)) {
+      msg.password = 'Vui lòng nhập mật khẩu';
+    } else {
+      if (signup.password.length < 8) {
+        msg.password = 'Mật khẩu phải có ít nhất 8 ký tự';
+      }
+    }
+    if (signup.confirmPassword !== null && signup.confirmPassword !== undefined)
+      if (validator.isEmpty(signup.confirmPassword)) {
+        msg.confirmPassword = 'Vui lòng nhập lại mật khẩu';
+      } else {
+        if (signup.password !== signup.confirmPassword) {
+          msg.confirmPassword = 'Mật khẩu không khớp';
+        }
+      }
+    setValidate(msg);
+    if (Object.keys(msg).length > 0) return false;
+    return true;
+  };
+  const handleChangeOnClick = async (e) => {
+    e.preventDefault();
+    const isValid = validateAll(signup);
+    if (!isValid) return;
+    try {
+      await signupService(signup);
+      setShowAlertCf({
+        open: true,
+        variant: Notify.SUCCESS,
+        text: 'Bạn có thể đăng nhập bằng tài khoản đã đăng ký',
+        title: 'Đăng ký thành công',
+        backdrop: 'static',
+        onClick: () => navigate('/login'),
+      });
+    } catch (e) {
+      if (e.response.data.error) {
+        const map = {
+          'username already existed':
+            'Email đã tồn tại, vui lòng nhập email khác',
+        };
+        const message = map[e.response.data.message] || e.response.data.message;
+        console.log(message);
+        handelNotify('error', message);
+      }
+    }
+  };
   return (
     <>
       <ToastContainer></ToastContainer>
+      <Modal
+        show={showAlertCf.open}
+        onHide={() => setShowAlertCf({ open: false })}
+        backdrop={showAlertCf.backdrop}
+        keyboard={false}
+      >
+        <Modal.Header
+          style={{ backgroundColor: showAlertCf.variant }}
+          closeButton
+        >
+          <Modal.Title>{showAlertCf.title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{showAlertCf.text}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary">Hủy</Button>
+          <Button onClick={showAlertCf.onClick} variant="primary">
+            OK
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <div class="container">
         <div class="card o-hidden border-0 shadow-lg my-5">
           <div class="card-body p-0">
@@ -62,7 +123,7 @@ function Register() {
                   <div class="text-center">
                     <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                   </div>
-                  <form class="user">
+                  <form class="user" onSubmit={handleChangeOnClick}>
                     <div class="form-group row">
                       <div class="col-sm-12 mb-3 mb-sm-0">
                         <input
@@ -73,6 +134,12 @@ function Register() {
                           name="fullname"
                           onChange={handleChange}
                         />
+                        <p
+                          style={{ color: 'red', textAlign: 'left' }}
+                          className="text-red-400 text-xs italic"
+                        >
+                          {validate.fullname}
+                        </p>
                       </div>
                     </div>
                     <div class="form-group">
@@ -84,6 +151,12 @@ function Register() {
                         name="username"
                         onChange={handleChange}
                       />
+                      <p
+                        style={{ color: 'red', textAlign: 'left' }}
+                        className="text-red-400 text-xs italic"
+                      >
+                        {validate.username}
+                      </p>
                     </div>
                     <div class="form-group row">
                       <div class="col-sm-6 mb-3 mb-sm-0">
@@ -95,6 +168,12 @@ function Register() {
                           name="password"
                           onChange={handleChange}
                         />
+                        <p
+                          style={{ color: 'red', textAlign: 'left' }}
+                          className="text-red-400 text-xs italic"
+                        >
+                          {validate.password}
+                        </p>
                       </div>
                       <div class="col-sm-6">
                         <input
@@ -102,22 +181,27 @@ function Register() {
                           class="form-control form-control-user"
                           id="exampleRepeatPassword"
                           placeholder="Repeat Password"
-                          name="repassword"
+                          name="confirmPassword"
                           onChange={handleChange}
                         />
+                        <p
+                          style={{ color: 'red', textAlign: 'left' }}
+                          className="text-red-400 text-xs italic"
+                        >
+                          {validate.confirmPassword}
+                        </p>
                       </div>
                     </div>
-                    <a
-                      href="login.html"
+                    <input
+                      type="submit"
                       class="btn btn-primary btn-user btn-block"
-                    >
-                      Register Account
-                    </a>
+                      value="Register Account"
+                    />
                     <hr />
                   </form>
                   <hr />
                   <div class="text-center">
-                    <NavLink to="/forgotpassword">
+                    <NavLink to="/forgot-password">
                       <small>Forgot Password?</small>
                     </NavLink>
                   </div>

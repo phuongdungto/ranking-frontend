@@ -29,7 +29,7 @@ function Sidebar() {
         <Navbar.Collapse id="basic-navbar-nav" className="row">
           <Nav className="me-auto" style={{ width: '100%' }}>
             <NavLink
-              to="/Home"
+              to="/"
               className={(navData) =>
                 'menu-item col-xl-2' + (navData.isActive ? ' active' : ' link')
               }
@@ -37,19 +37,13 @@ function Sidebar() {
               <span>Post</span>
             </NavLink>
             <NavLink
-              to="/camera"
+              to="/posts"
               className={(navData) =>
                 'menu-item col-xl-2' + (navData.isActive ? ' active' : ' link')
               }
             >
               <span>Want To Go</span>
             </NavLink>
-            <NavLink
-              to="/videocam"
-              className={(navData) =>
-                'menu-item col-xl-2' + (navData.isActive ? ' active' : ' link')
-              }
-            ></NavLink>
           </Nav>
         </Navbar.Collapse>
       </Container>

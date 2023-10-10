@@ -33,7 +33,7 @@ function Login() {
       const data = response && response.data ? response.data : '';
       cookies.save('Token', data.access_token);
       cookies.save('user', data.user);
-      dispatch(userLogin(data.information));
+      dispatch(userLogin(data.user));
       navigate('/');
     } catch (e) {
       if (
@@ -131,12 +131,12 @@ function Login() {
                       </form>
                       <hr />
                       <div class="text-center">
-                        <NavLink to="/forgotpassword">
+                        <NavLink to="/forgot-password">
                           <small>Forgot Password?</small>
                         </NavLink>
                       </div>
                       <div class="text-center">
-                        <NavLink to="/signin">
+                        <NavLink to="/signup">
                           <small>Create an Account!</small>
                         </NavLink>
                       </div>

@@ -8,10 +8,6 @@ function Header({ children }) {
     display: 'block',
     zIndex: '15',
   };
-  window.addEventListener('scroll', function () {
-    var header = this.document.getElementById('sidebar-menu');
-    header.classList.toggle('sticky', this.window.scrollY > 39);
-  });
   return (
     <>
       <Brand />

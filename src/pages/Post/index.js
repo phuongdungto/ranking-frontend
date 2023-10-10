@@ -1,231 +1,86 @@
 import './post.scss';
 import { useState, useEffect } from 'react';
-// import Box from '@mui/material/Box';
-// import Button from '@mui/material/Button';
-// import Typography from '@mui/material/Typography';
-// import Modal from '@mui/material/Modal';
-// import Button from 'react-bootstrap/Button';
 import moment from 'moment';
 import Linkify from 'linkify-react';
-// import validator from 'validator';
 import { Image, NavDropdown, Dropdown } from 'react-bootstrap';
-// import { useNavigate } from 'react-router-dom';
-// import io from 'socket.io-client';
-// import { getUserService } from '../../service/authService';
+import { getPostsService } from '../../services/post.service';
+
 const Post = () => {
   const [posts, setPosts] = useState([]);
-  const user = 'dung';
+  const [search, setSearch] = useState({
+    limit: 5,
+    page: 1,
+  });
+  const getPosts = async () => {
+    const value = await getPostsService(search);
+    const data = value.data;
+    console.log(data);
+    setPosts(data);
+  };
+  const handleLoadMore = () => {
+    setSearch({
+      ...search,
+      limit: search.limit + 5,
+    });
+  };
+  useEffect(() => {
+    getPosts();
+  }, [search]);
   return (
     <>
-      {posts &&
-        posts.length > 0 &&
-        posts.map((item) => {
-          const day = moment(item.updatedAt).format('DD/MM/YYYY HH:mm:ss');
-          if (!user) {
+      <div className="container mt-5 mb-5">
+        {posts.posts &&
+          posts.posts.length > 0 &&
+          posts.posts.map((item, index) => {
+            const day = moment(item.createdAt).format('DD/MM/YYYY HH:mm:ss');
             return (
-              <div class="status-field-container write-post-container">
-                <div class="user-profile-box">
-                  <div class="user-profile">
-                    <img
-                      src={
-                        'http://localhost:3004/static/avatar/image/' +
-                        item.user.image
-                      }
-                      alt=""
-                    />
-                    <div>
-                      <p> {item.user.fullname}</p>
-                      <small>{day}</small>
-                    </div>
-                  </div>
-                  <div>
-                    <a href="#">
-                      <i class="fas fa-ellipsis-v"></i>
-                    </a>
-                  </div>
-                </div>
-                <div class="status-field">
-                  <Linkify as="p">{item.content}</Linkify>
-                  {item.images &&
-                    item.images.length > 0 &&
-                    item.images.map((img) => {
-                      return (
+              <div class="row mt-5 d-flex align-items-center justify-content-center">
+                <div class="col-md-6">
+                  <div class="card">
+                    <div class="d-flex justify-content-between p-2 px-3">
+                      <div class="d-flex flex-row align-items-center">
+                        {' '}
                         <img
-                          src={
-                            'http://localhost:3004/static/post/image/' +
-                            img.name
-                          }
-                          alt=""
+                          src={'http://localhost:3004/' + item.user.image}
+                          width="40"
+                          class="rounded-image"
                         />
-                      );
-                    })}
-                </div>
-                <div class="post-reaction">
-                  <div class="activity-icons">
-                    <div
-                      style={{ cursor: 'pointer' }}
-                      // onClick={(e) => {
-                      //   getPostHandel(item.id);
-                      //   handleOpen(item.id);
-                      // }}
-                      className="mt-3"
-                    >
-                      Comment
+                        <div class="d-flex flex-column ml-2">
+                          {' '}
+                          <span class="font-weight-bold">
+                            {item.user.fullname}
+                          </span>{' '}
+                        </div>
+                      </div>
+                      <div class="d-flex flex-row mt-1 ellipsis">
+                        {' '}
+                        <small class="mr-2">{day}</small>{' '}
+                        <i class="fa fa-ellipsis-h"></i>{' '}
+                      </div>
+                    </div>{' '}
+                    <hr />
+                    <div class="p-2">
+                      <p class="text-justify title">{item.title}</p>
                     </div>
-                  </div>
-                  <div class="post-profile-picture">
-                    {/* <img src={require("../../assets/home/images/profile-pic.png ")} alt="" /> <i class=" fas fa-caret-down"></i> */}
+                    {/* <img src="https://i.imgur.com/xhzhaGA.jpg" class="img-fluid" /> */}
+                    <div class="p-2">
+                      <p class="text-justify">{item.content}</p>
+                    </div>
                   </div>
                 </div>
               </div>
             );
-          } else {
-            if (user.id == item.userId) {
-              return (
-                <div class="status-field-container write-post-container">
-                  <NavDropdown
-                    id="dropdown-basic-button"
-                    // title={UserMenu}
-                    key="end"
-                    drop="end"
-                  >
-                    {/* <Dropdown.Item
-                      onClick={(e) => handleDeletePost(item)}
-                      className="dropdowDot"
-                    >
-                      Delete
-                    </Dropdown.Item> */}
-                  </NavDropdown>
-                  <div class="user-profile-box">
-                    <div class="user-profile">
-                      <img
-                        src={
-                          'http://localhost:3004/static/avatar/image/' +
-                          item.user.image
-                        }
-                        alt=""
-                      />
-                      <div>
-                        <p> {item.user.fullname}</p>
-                        <small>{day}</small>
-                      </div>
-                    </div>
-                    <div>
-                      <a href="#">
-                        <i class="fas fa-ellipsis-v"></i>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="status-field">
-                    <Linkify as="p">{item.content}</Linkify>
-                    {item.images &&
-                      item.images.length > 0 &&
-                      item.images.map((img) => {
-                        return (
-                          <img
-                            src={
-                              'http://localhost:3004/static/post/image/' +
-                              img.name
-                            }
-                            alt=""
-                          />
-                        );
-                      })}
-                  </div>
-                  <div class="post-reaction">
-                    <div class="activity-icons">
-                      <div
-                        style={{ cursor: 'pointer' }}
-                        onClick={(e) => {
-                          // getPostHandel(item.id);
-                          // handleOpen(item.id);
-                        }}
-                        className="mt-3"
-                      >
-                        {/* <img
-                          src={require('../../assets/home/images/comments.png')}
-                          alt=""
-                        /> */}
-                        Comment
-                      </div>
-                    </div>
-                    <div class="post-profile-picture">
-                      {/* <img src={require("../../assets/home/images/profile-pic.png ")} alt="" /> <i class=" fas fa-caret-down"></i> */}
-                    </div>
-                  </div>
-                </div>
-              );
-            } else {
-              return (
-                <div class="status-field-container write-post-container">
-                  <div class="user-profile-box">
-                    <div class="user-profile">
-                      <img
-                        src={
-                          'http://localhost:3004/static/avatar/image/' +
-                          item.user.image
-                        }
-                        alt=""
-                      />
-                      <div>
-                        <p> {item.user.fullname}</p>
-                        <small>{day}</small>
-                      </div>
-                    </div>
-                    <div>
-                      <a href="#">
-                        <i class="fas fa-ellipsis-v"></i>
-                      </a>
-                    </div>
-                  </div>
-                  <div class="status-field">
-                    <Linkify as="p">{item.content}</Linkify>
-                    {item.images &&
-                      item.images.length > 0 &&
-                      item.images.map((img) => {
-                        return (
-                          <img
-                            src={
-                              'http://localhost:3004/static/post/image/' +
-                              img.name
-                            }
-                            alt=""
-                          />
-                        );
-                      })}
-                  </div>
-                  <div class="post-reaction">
-                    <div class="activity-icons">
-                      <div
-                        style={{ cursor: 'pointer' }}
-                        onClick={(e) => {
-                          // getPostHandel(item.id);
-                          // handleOpen(item.id);
-                        }}
-                        className="mt-3"
-                      >
-                        Comment
-                      </div>
-                    </div>
-                    <div class="post-profile-picture">
-                      {/* <img src={require("../../assets/home/images/profile-pic.png ")} alt="" /> <i class=" fas fa-caret-down"></i> */}
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-          }
-        })}
-
+          })}
+      </div>
       <button
-        // onClick={(e) => handleLoadMore()}
+        className="mb-3"
+        onClick={(e) => handleLoadMore()}
         type="button"
         class="btn-LoadMore"
         onclick="LoadMoreToggle()"
       >
         Load More
       </button>
-      {/* </div> */}
     </>
   );
 };
