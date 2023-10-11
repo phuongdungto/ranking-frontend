@@ -28,7 +28,7 @@ function Sidebar() {
         <div className="sidebar-menu">
           <ul className="menu">
             <NavLink
-              to="/admin/user"
+              to="/admin/users"
               className={(navData) =>
                 'sidebar-item' + (navData.isActive ? ' active' : ' link')
               }
@@ -36,17 +36,6 @@ function Sidebar() {
               <span className="sidebar-link">
                 <FontAwesomeIcon icon={faUser} />
                 <span>Quản lý người dùng</span>
-              </span>
-            </NavLink>
-            <NavLink
-              to="/admin/role"
-              className={(navData) =>
-                'sidebar-item' + (navData.isActive ? ' active' : ' link')
-              }
-            >
-              <span className="sidebar-link">
-                <FontAwesomeIcon icon={faSignsPost} />
-                <span>Quản lý bài đăng</span>
               </span>
             </NavLink>
           </ul>

@@ -23,8 +23,11 @@ export const getUsersService = (user) => {
     s += '&page=' + user.page + '';
   }
 
-  console.log(s);
   return request.get('users' + s);
+};
+
+export const getUserByIdService = (userId, token) => {
+  return request.get('users/' + userId);
 };
 
 export const getRankMonthlyService = () => {
@@ -44,12 +47,24 @@ export const updateUserProfileService = async (user, token) => {
   return await request.put('users/me', user, config);
 };
 
-export const updateUserService = async (id, user, token) => {
+export const updateUserService = async (userId, user, token) => {
   const config = {
     headers: { Authorization: `Bearer ${token}` },
   };
-  const bodyParameters = {
-    ...user,
+
+  return await request.put('users/' + userId, user, config);
+};
+
+export const createUserService = async (user, token) => {
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
   };
-  return await request.put('users/' + id, bodyParameters, config);
+  return await request.post('users', user, config);
+};
+
+export const deleteUserService = async (userId, token) => {
+  const config = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
+  return await request.delete('users/' + userId, config);
 };

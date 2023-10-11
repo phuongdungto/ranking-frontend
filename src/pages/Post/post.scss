@@ -70,12 +70,18 @@ hr {
   outline: 0;
   box-shadow: none;
 }
-.title {
-  font-weight: bold;
-}
-.rounded-circle {
+
+.img-dot {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  right: 5%;
+  top: 0px;
+  cursor: pointer;
+  z-index: 5;
 }
 
-hr {
-  background-color: black;
+.dropdowDot {
+  right: 5%;
+  z-index: 100;
 }

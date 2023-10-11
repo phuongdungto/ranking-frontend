@@ -14,104 +14,103 @@ import { useDispatch, useSelector } from 'react-redux';
 import validator from 'validator';
 
 function Header() {
-  const admin = useSelector((state) => state.admin.admin);
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [showNav, setShowNav] = useState(true);
-  const [show, setShow] = useState(false);
-  const handleshowChange = () => {
-    setValidate('');
-    setChange({
-      currentPassword: '',
-      newPassword: '',
-    });
-    setConfirmPass({
-      repass: '',
-    });
-    setShow(true);
-  };
-  const handleOnclickLogout = () => {
-    cookies.remove('Tokenadmin', { path: '/' });
-    cookies.remove('admin', { path: '/' });
-    navigate('/admin/login');
-  };
+  // const admin = useSelector((state) => state.admin.admin);
+  // const navigate = useNavigate();
+  // const dispatch = useDispatch();
+  // const [show, setShow] = useState(false);
+  // const handleshowChange = () => {
+  //   setValidate('');
+  //   setChange({
+  //     currentPassword: '',
+  //     newPassword: '',
+  //   });
+  //   setConfirmPass({
+  //     repass: '',
+  //   });
+  //   setShow(true);
+  // };
+  // const handleOnclickLogout = () => {
+  //   cookies.remove('Tokenadmin', { path: '/' });
+  //   cookies.remove('admin', { path: '/' });
+  //   navigate('/admin/login');
+  // };
 
-  let name = '';
-  if (admin !== undefined && admin !== null) {
-    let arrName = admin.fullname.split(' ');
-    if (arrName.length < 1) {
-      name = admin.fullname;
-    } else {
-      name += arrName[arrName.length - 1];
-    }
-  }
+  // let name = '';
+  // if (admin !== undefined && admin !== null) {
+  //   let arrName = admin.fullname.split(' ');
+  //   if (arrName.length < 1) {
+  //     name = admin.fullname;
+  //   } else {
+  //     name += arrName[arrName.length - 1];
+  //   }
+  // }
 
-  const [validate, setValidate] = useState('');
-  const handleClose = () => setShow(false);
-  const [change, setChange] = useState({
-    currentPassword: '',
-    newPassword: '',
-  });
-  const [confirmPass, setConfirmPass] = useState({
-    repass: '',
-  });
+  // const [validate, setValidate] = useState('');
+  // const handleClose = () => setShow(false);
+  // const [change, setChange] = useState({
+  //   currentPassword: '',
+  //   newPassword: '',
+  // });
+  // const [confirmPass, setConfirmPass] = useState({
+  //   repass: '',
+  // });
 
-  const handleChangePassword = (e) => {
-    const value = e.target.value;
-    setChange({
-      ...change,
-      [e.target.name]: value,
-    });
-  };
-  const RePassword = (e) => {
-    const value = e.target.value;
-    setConfirmPass({
-      ...confirmPass,
-      [e.target.name]: value,
-    });
-    console.log(confirmPass);
-  };
-  const handeClickChangePassword = async (e) => {
-    e.preventDefault();
-    const isValid = validateAll();
-    if (!isValid) return;
-    try {
-      let token = cookies.load('Tokenadmin');
-    } catch (e) {
-      console.log(e);
-    }
-  };
-  const validateAll = () => {
-    const msg = {};
-    if (validator.isEmpty(change.currentPassword)) {
-      msg.passwordcCurrent = 'Please input your Current Password';
-    } else {
-      if (change.currentPassword.length < 8) {
-        msg.passwordcCurrent =
-          '"password" length must be at least 8 characters';
-      }
-    }
+  // const handleChangePassword = (e) => {
+  //   const value = e.target.value;
+  //   setChange({
+  //     ...change,
+  //     [e.target.name]: value,
+  //   });
+  // };
+  // const RePassword = (e) => {
+  //   const value = e.target.value;
+  //   setConfirmPass({
+  //     ...confirmPass,
+  //     [e.target.name]: value,
+  //   });
+  //   console.log(confirmPass);
+  // };
+  // const handeClickChangePassword = async (e) => {
+  //   e.preventDefault();
+  //   const isValid = validateAll();
+  //   if (!isValid) return;
+  //   try {
+  //     let token = cookies.load('Tokenadmin');
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
+  // const validateAll = () => {
+  //   const msg = {};
+  //   if (validator.isEmpty(change.currentPassword)) {
+  //     msg.passwordcCurrent = 'Please input your Current Password';
+  //   } else {
+  //     if (change.currentPassword.length < 8) {
+  //       msg.passwordcCurrent =
+  //         '"password" length must be at least 8 characters';
+  //     }
+  //   }
 
-    if (validator.isEmpty(change.newPassword)) {
-      msg.passwordNew = 'Please input your New Password';
-    } else {
-      if (change.newPassword.length < 8) {
-        msg.passwordNew = '"password" length must be at least 8 characters';
-        console.log('1');
-      }
-      console.log('1');
-    }
-    if (validator.isEmpty(confirmPass.repass)) {
-      msg.passwordConfirm = 'Please input your Confirm Password';
-    } else {
-      if (confirmPass.repass !== change.newPassword) {
-        msg.passwordConfirm = 'Confirm password is incorect';
-      }
-    }
-    setValidate(msg);
-    if (Object.keys(msg).length > 0) return false;
-    return true;
-  };
+  //   if (validator.isEmpty(change.newPassword)) {
+  //     msg.passwordNew = 'Please input your New Password';
+  //   } else {
+  //     if (change.newPassword.length < 8) {
+  //       msg.passwordNew = '"password" length must be at least 8 characters';
+  //       console.log('1');
+  //     }
+  //     console.log('1');
+  //   }
+  //   if (validator.isEmpty(confirmPass.repass)) {
+  //     msg.passwordConfirm = 'Please input your Confirm Password';
+  //   } else {
+  //     if (confirmPass.repass !== change.newPassword) {
+  //       msg.passwordConfirm = 'Confirm password is incorect';
+  //     }
+  //   }
+  //   setValidate(msg);
+  //   if (Object.keys(msg).length > 0) return false;
+  //   return true;
+  // };
 
   return (
     <header className="mb-3">
@@ -136,14 +135,13 @@ function Header() {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+          {/* <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0"></ul>
             <div className="dropdown">
               <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                 {showNav ? (
                   <div
                     className="user-menu d-flex"
-                    onClick={() => setShowNav(false)}
                   >
                     <div className="user-name text-end me-3">
                       <h6 className="mb-0 text-gray-600">
@@ -197,10 +195,7 @@ function Header() {
                     )}
                   </h6>
                 </li>
-                <li
-                  stye={{ backgroundColor: '#fff !important' }}
-                  onClick={handleshowChange}
-                >
+                <li stye={{ backgroundColor: '#fff !important' }}>
                   <button
                     className="btn-changepass"
                     style={{ background: '#fff' }}
@@ -213,7 +208,7 @@ function Header() {
                 <li>
                   <hr className="dropdown-divider" />
                 </li>
-                <li id="logout" onClick={handleOnclickLogout}>
+                <li id="logout">
                   <a className="dropdown-item">
                     <i className="icon-mid bi bi-box-arrow-left me-2"></i>
                     Đăng Xuất
@@ -221,7 +216,7 @@ function Header() {
                 </li>
               </ul>
             </div>
-          </div>
+          </div> */}
         </div>
       </nav>
     </header>

@@ -18,6 +18,9 @@ function Brand() {
   const handleOnclickProfile = () => {
     navigate('/profile');
   };
+  const handleOnclickAdmin = () => {
+    navigate('/admin/users');
+  };
   let path = (
     <Button
       onClick={(e) => handleOnclickLogin()}
@@ -41,8 +44,13 @@ function Brand() {
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item onClick={(e) => handleOnclickProfile()}>
-            thông tin tài khoản
+            Thông tin tài khoản
           </Dropdown.Item>
+          {user && user.role === 'admin' && (
+            <Dropdown.Item onClick={(e) => handleOnclickAdmin()}>
+              Đến trang quản lý
+            </Dropdown.Item>
+          )}
           <Dropdown.Item onClick={(e) => handleOnclickLogout()}>
             Đăng xuất
           </Dropdown.Item>

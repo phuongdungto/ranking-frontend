@@ -684,7 +684,9 @@ body {
 .link-statistic {
   color: gray;
 }
-
+.statistic-item {
+  font-weight: bold;
+}
 .statistic-item {
   &:hover {
     color: #000;
@@ -707,23 +709,20 @@ body {
 }
 
 .current-user-item {
-  width: 100%;
   position: fixed;
   bottom: 0;
-  padding: 1px;
-
-  display: block;
-  background-color: orange;
-  height: 80px;
-  div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .infor-current-user {
-    text-align: left;
-    justify-content: left;
-  }
+  width: 100%;
+  // display: block;
+  // background-color: orange;
+  // height: 80px;
+  // div {
+  //   display: flex;
+  //   align-items: center;
+  // }
+  // .infor-current-user {
+  //   text-align: left;
+  //   justify-content: left;
+  // }
 }
 .content {
   margin-top: 85px;
@@ -734,4 +733,74 @@ body {
 .rank-item {
   width: 100%;
   height: 100%;
+}
+.contentAdmin {
+  margin-top: 70px;
+}
+
+.post-upload-textarea {
+  padding: 20px 0px 0px 55px;
+}
+
+.post-upload-textarea textarea {
+  width: 100%;
+  border: 0px;
+  outline: none;
+  border-bottom: 1px solid #ccc;
+  background: transparent;
+  resize: none;
+}
+
+.add-post-links {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.add-post-links a {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  color: #626262;
+  font-size: 13px;
+}
+
+.add-post-links a img {
+  width: 20px;
+  margin-right: 13px;
+}
+
+.label-holder {
+  width: 100%;
+  height: 50px;
+  // margin-top: 3em;
+  display: grid;
+  place-items: center;
+}
+
+.label {
+  height: 50px;
+  width: 50px;
+  background-color: white;
+  color: black;
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.result {
+  min-height: 100%;
+  max-height: auto;
+  width: 100%;
+  background-color: white;
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: left;
+}
+
+.content {
+  margin-top: 85px;
 }

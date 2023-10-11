@@ -16,7 +16,7 @@ function DefaultLayout({ children }) {
       <div style={mystyle}>
         <Header />
       </div>
-      <div className="content mt-6">{children}</div>
+      <div className="content">{children}</div>
     </div>
   );
 }
