@@ -11,13 +11,14 @@ import { ReactSVG } from 'react-svg';
 import { NavLink, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai';
+import CardCurrentItem from '../../components/items/cardCurrent.item';
 
 function Home() {
   const user = useSelector((state) => state.user.user);
   const location = useLocation();
   const [users, setUsers] = useState();
   const [scurrentRank, setScurrentRank] = useState(1);
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState(0);
   const [term, setTerm] = useState(false);
   const [showCurrent, setShowCurrent] = useState(false);
   let currentRank = 1;
@@ -37,7 +38,7 @@ function Home() {
         currentRank = 1;
         currentPostCount = data[0].postCount;
         setCurrentPosition(false);
-        setCurrentUser(data[0]);
+        setCurrentUser(data[0].postCount);
       } else {
         for (let i = 1; i < data.length; i++) {
           if (data[i - 1].postCount > data[i].postCount) {
@@ -47,7 +48,7 @@ function Home() {
             console.log(data[i].username);
             currentRank = count;
             currentPostCount = data[i].postCount;
-            setCurrentUser(data[i]);
+            setCurrentUser(data[i].postCount);
             if (i <= 2) {
               setCurrentPosition(false);
             }
@@ -102,13 +103,7 @@ function Home() {
   }, [scrollPosition]);
   return (
     <>
-      <div
-        className={
-          !currentPostion
-            ? 'container-fluid home-container-fuild demo'
-            : 'container-fluid home-container-fuild'
-        }
-      >
+      <div className={'container-fluid home-container-fuild'}>
         <div className="card shadow mb-4">
           <div className="card-body">
             <div className="statistic" id="po">
@@ -189,7 +184,7 @@ function Home() {
               </div>
               <div class="card-body-ranking-item col-4">
                 {users && users.length >= 1 && (
-                  <div className="user-ranking ">
+                  <div className="user-ranking">
                     <img
                       className="crown-icon"
                       src={
@@ -199,7 +194,10 @@ function Home() {
                     />
                     <p>No.1</p>
                     <div className="user-ranking-img user-top1">
-                      <img src={'http://localhost:3004/' + users[0].image} />
+                      <img
+                        className={currentPostion ? '' : 'demo'}
+                        src={'http://localhost:3004/' + users[0].image}
+                      />
                     </div>
                     <p className="user-name mt-3">{users[0].fullname}</p>
                     <div className="ranking-count-posts">
@@ -336,53 +334,13 @@ function Home() {
           )}
         </div>
       </div>
-      {/* <div
-        style={showCurrent ? { display: 'none' } : { display: 'block' }}
+      <CardCurrentItem
+        showCurrent={showCurrent}
         className="current-user-item"
-      >
-        <div className="row">
-          <div className="col-3">
-            <p>{currentRank}</p>
-          </div>
-          <div className="col-2">
-            <div className="image-current-user">
-              <img src={'http://localhost:3004/' + user.image} />
-            </div>
-          </div>
-          <div className="col-7">
-            <div className="row infor-current-user">
-              <p>{user.fullname}</p>
-              <p>{currentPostCount}</p>
-            </div>
-          </div>
-        </div>
-      </div> */}
-      <div class={'col-12 mb-2'}>
-        <div class="card bg-light text-black shadow">
-          <div
-            style={showCurrent ? { display: 'none' } : { display: 'block' }}
-            class="card-body current-user-item"
-          >
-            <div className="rank-item row">
-              <div className="col-1">
-                <div className="ranking ">
-                  <span>{scurrentRank}</span>
-                </div>
-              </div>
-              <div className="col-3">
-                <div className="user-avatar">
-                  <img src={'http://localhost:3004/' + user.image} />
-                </div>
-              </div>
-              <div className="col-8 user-name">
-                <p>{user.fullname}</p>
-                <small className="user-post-count">{currentPostCount}</small>
-                <small> posts</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        user={user}
+        index={scurrentRank}
+        postCount={currentUser}
+      />
     </>
   );
 }

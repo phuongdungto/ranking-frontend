@@ -27,29 +27,30 @@ export const getPostsService = (post) => {
   return request.get('posts' + s);
 };
 
-// export const getRankMonthlyService = () => {
-//   return request.get('ranks/monthly');
-// };
+export const createPostService = async (post, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  return await request.post('posts', post, config);
+};
 
-// export const getRankYearlyService = () => {
-//   return request.get('ranks/yearly');
-// };
+export const deletePostService = async (postId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  return await request.delete('posts/' + postId, config);
+};
 
-// export const updatepostProfileService = async (post, token) => {
-//   const config = {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   };
-//   return await request.put('posts/me', post, config);
-// };
-
-// export const updatepostService = async (id, post, token) => {
-//   const config = {
-//     headers: { Authorization: `Bearer ${token}` },
-//   };
-//   const bodyParameters = {
-//     ...post,
-//   };
-//   return await request.put('posts/' + id, bodyParameters, config);
-// };
+export const updatePostService = async (postId, post, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  delete post.id;
+  return await request.put('posts/' + postId, post, config);
+};

@@ -157,13 +157,20 @@ const UserProfile = () => {
                 <div className="col-md-2 mb-3">{pathBtn}</div>
                 <div className="row">
                   <div class="col-12">
-                    <div class="profile-img">
-                      <img
-                        src={'http://localhost:3004/' + userProfile.image}
-                        alt=""
-                      />
+                    <div style={{ position: 'relative' }} class="profile-img">
+                      <div className="row">
+                        <a
+                          href={'http://localhost:3004/' + userProfile.image}
+                          target="_blank"
+                        >
+                          <img
+                            src={'http://localhost:3004/' + userProfile.image}
+                            alt="avatar"
+                          />
+                        </a>
+                      </div>
                       {!repair && (
-                        <div class="file btn btn-lg btn-primary">
+                        <div class="row mt-2 file btn btn-lg btn-primary">
                           Change Photo
                           <input type="file" onChange={handleChangeImage} />
                         </div>
